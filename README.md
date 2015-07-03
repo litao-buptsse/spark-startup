@@ -19,6 +19,19 @@ Note:
 1. 打包后的JAR位置：target/scala-2.10/spark-startup-scala_2.10-1.0.jar
 2. 建议使用build/sbt工具进行打包，将自动下载scala、sbt、zinc等工具，并自动开启zinc加速编译
 
+## SBT打包（assembly）
+
+```
+$ build/sbt assembly
+```
+
+Note: 
+
+1. 打包后的JAR位置：target/scala-2.10/spark-startup-scala-assembly-1.0.jar
+2. 可在build.sbt中配置main class
+3. 将dependency的scope设置为"provided"，则此依赖不会打包进行assembly
+4. 默认在build.sbt中将autoScalaLibrary为false，则不会将scala依赖打包进assembly
+
 ## 本地运行
 
 ```
