@@ -5,3 +5,5 @@
 /build/zinc*
 /build/scala*
 /build/*.jar
+/classes
+/cp

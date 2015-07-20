@@ -53,15 +53,24 @@ object HelloLDA {
   def main(args: Array[String]) {
     val conf = new SparkConf().setAppName("HelloLDA").setMaster("local[*]")
     val sc = new SparkContext(conf)
+    sc.setCheckpointDir("cp")
 
     // Load and parse the data
     val data = sc.textFile("data/mllib/sample_lda_data.txt")
-    val parsedData = data.map(s => Vectors.dense(s.trim.split(' ').map(_.toDouble)))
+
+    // For dense vector
+    // val parsedData = data.map(s => Vectors.dense(s.trim.split(' ').map(_.toDouble)))
+    // For sparse vector
+    val parsedData = data.map { s =>
+      val values = s.trim.split(' ').map(_.toDouble)
+      val indices = (0 until values.size).toArray
+      Vectors.sparse(values.size, indices, values)
+    }
     // Index documents with unique IDs
     val corpus = parsedData.zipWithIndex.map(_.swap).cache()
 
     // Cluster the documents into three topics using LDA
-    val ldaModel = new LDA().setK(3).run(corpus)
+    val ldaModel = new LDA().setK(3).setMaxIterations(10).setCheckpointInterval(5).run(corpus)
 
     // Output topics. Each is a distribution over words (matching word count vectors)
     println("Learned topics (as distributions over vocab of " + ldaModel.vocabSize + " words):")
