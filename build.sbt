@@ -25,6 +25,7 @@ libraryDependencies ++= {
     "org.apache.spark" %% "spark-mllib" % sparkVersion % "provided",
     "org.apache.spark" %% "spark-streaming" % sparkVersion % "provided",
     "org.apache.spark" %% "spark-streaming-kafka" % sparkVersion,
+    "org.apache.hbase" % "hbase" % "0.98.13-hadoop2" % "provided" pomOnly(),
     "com.github.fommil.netlib" % "all" % "1.1.2" pomOnly()
   )
 }

@@ -1,6 +1,6 @@
 package com.sogou.spark
 
-import org.apache.spark.{HashPartitioner, SparkConf}
+import org.apache.spark.SparkConf
 import org.apache.spark.streaming.dstream.DStream
 import org.apache.spark.streaming.kafka.KafkaUtils
 import org.apache.spark.streaming.{Seconds, StreamingContext}
@@ -33,19 +33,19 @@ object HelloKafkaSource {
     val conf = new SparkConf().setMaster("local[2]").setAppName("HelloKafkaSource")
     val ssc = new StreamingContext(conf, Seconds(1))
 
-    val KAFKA_ZOOKEEPER_QUORUM = "10.11.204.97:2181,10.11.204.98:2181,10.11.204.99:2181/kafka"
-    val KAFKA_CONSUMER_GROUP = "realtime-alert"
-    val KAFKA_TOPICS = "clouddev.monitoring.service"
+    val KAFKA_ZOOKEEPER_QUORUM = "localhost:2181/kafka"
+    val KAFKA_CONSUMER_GROUP = "mygroup"
+    val KAFKA_TOPICS = "mytopic"
     val KAFKA_CONSUMER_THREAD_NUM = 5
     val topicMap = KAFKA_TOPICS.split(",").map((_, KAFKA_CONSUMER_THREAD_NUM)).toMap
 
     val inputStream: DStream[(String, String)] = KafkaUtils.createStream(ssc,
       KAFKA_ZOOKEEPER_QUORUM, KAFKA_CONSUMER_GROUP, topicMap)
 
-    val riskData = inputStream.filter { kv =>
-      val value = kv._2.toLong
-      value > 10000
-    }
+    inputStream.print
+
+    ssc.start
+    ssc.awaitTermination
   }
 }
 
@@ -88,7 +88,7 @@ object HelloTransform {
 
 object HelloWindow {
   def main(args: Array[String]) {
-    val conf = new SparkConf().setMaster("local[2]").setAppName("HelloTransform")
+    val conf = new SparkConf().setMaster("local[2]").setAppName("HelloWindow")
     val ssc = new StreamingContext(conf, Seconds(1))
 
     val lines = ssc.socketTextStream("localhost", 9999)
@@ -105,7 +105,7 @@ object HelloWindow {
 
 object HelloWindow2 {
   def main(args: Array[String]) {
-    val conf = new SparkConf().setMaster("local[2]").setAppName("HelloTransform")
+    val conf = new SparkConf().setMaster("local[2]").setAppName("HelloWindow2")
     val ssc = new StreamingContext(conf, Seconds(1))
 
     val lines = ssc.socketTextStream("localhost", 9999)
@@ -122,18 +122,13 @@ object HelloWindow2 {
 
 object HelloForeach {
   def main(args: Array[String]) {
-    val conf = new SparkConf().setMaster("local[2]").setAppName("HelloTransform")
+    val conf = new SparkConf().setMaster("local[2]").setAppName("HelloForeach")
     val ssc = new StreamingContext(conf, Seconds(1))
 
     val lines = ssc.socketTextStream("localhost", 9999)
 
     val wordCounts = lines.window(Seconds(5), Seconds(1)).flatMap(_.split(" "))
       .map((_, 1)).reduceByKey(_ + _)
-
-
-    wordCounts.foreachRDD(rdd =>
-      rdd.foreach(println)
-    )
 
     wordCounts.foreachRDD(rdd =>
       rdd.foreachPartition(partitionOfRecords =>
@@ -145,7 +140,6 @@ object HelloForeach {
     ssc.awaitTermination()
   }
 }
-
 
 object HelloCache {
   def main(args: Array[String]) {
