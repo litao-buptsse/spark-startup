@@ -19,13 +19,16 @@ resolvers ++= Seq(
 
 libraryDependencies ++= {
   val sparkVersion = "1.4.0"
+  val hbaseVersion = "0.98.13-hadoop2"
   Seq(
     "org.apache.spark" %% "spark-core" % sparkVersion % "provided",
     "org.apache.spark" %% "spark-sql" % sparkVersion % "provided",
     "org.apache.spark" %% "spark-mllib" % sparkVersion % "provided",
     "org.apache.spark" %% "spark-streaming" % sparkVersion % "provided",
     "org.apache.spark" %% "spark-streaming-kafka" % sparkVersion,
-    "org.apache.hbase" % "hbase" % "0.98.13-hadoop2" % "provided" pomOnly(),
+    "org.apache.hbase" % "hbase-common" % hbaseVersion % "provided",
+    "org.apache.hbase" % "hbase-client" % hbaseVersion % "provided",
+    "org.apache.hbase" % "hbase-server" % hbaseVersion % "provided",
     "com.github.fommil.netlib" % "all" % "1.1.2" pomOnly()
   )
 }
