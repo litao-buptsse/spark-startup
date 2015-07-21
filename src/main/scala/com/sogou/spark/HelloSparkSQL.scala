@@ -14,6 +14,11 @@ object HelloHive {
 
     val sql = "select channel, count(*) as pv from custom.common_pc_pv " +
       "where logdate='2015071605' group by channel"
-    val df = sqlContext.sql(sql).show
+    val df = sqlContext.sql(sql)
+
+    // Save to hdfs
+    df.rdd.saveAsTextFile("pv_info")
+    // Print to console
+    df.show()
   }
 }
