@@ -25,11 +25,22 @@ libraryDependencies ++= {
     "org.apache.spark" %% "spark-sql" % sparkVersion % "provided",
     "org.apache.spark" %% "spark-mllib" % sparkVersion % "provided",
     "org.apache.spark" %% "spark-streaming" % sparkVersion % "provided",
-    "org.apache.spark" %% "spark-streaming-kafka" % sparkVersion,
+    "org.apache.spark" %% "spark-streaming-kafka" % sparkVersion
+      exclude("org.spark-project.spark", "unused")
+      exclude("org.scala-lang", "scala-library")
+      exclude("org.slf4j", "slf4j-api")
+      exclude("log4j", "log4j"),
     "org.apache.hbase" % "hbase-common" % hbaseVersion % "provided",
     "org.apache.hbase" % "hbase-client" % hbaseVersion % "provided",
     "org.apache.hbase" % "hbase-server" % hbaseVersion % "provided",
-    "com.github.fommil.netlib" % "all" % "1.1.2" pomOnly()
+    "com.github.fommil.netlib" % "all" % "1.1.2" pomOnly(),
+    "com.cloudera" % "spark-hbase" % "0.0.2-clabs" excludeAll(
+      ExclusionRule(organization = "org.apache.hbase"),
+      ExclusionRule(organization = "org.apache.hbase"),
+      ExclusionRule(organization = "org.scala-lang"),
+      ExclusionRule(organization = "org.scalatest"),
+      ExclusionRule(organization = "org.apache.spark")
+      )
   )
 }
 
