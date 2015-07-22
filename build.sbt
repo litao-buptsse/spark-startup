@@ -36,10 +36,15 @@ libraryDependencies ++= {
     "com.github.fommil.netlib" % "all" % "1.1.2" pomOnly(),
     "com.cloudera" % "spark-hbase" % "0.0.2-clabs" excludeAll(
       ExclusionRule(organization = "org.apache.hbase"),
-      ExclusionRule(organization = "org.apache.hbase"),
+      ExclusionRule(organization = "org.apache.spark"),
       ExclusionRule(organization = "org.scala-lang"),
-      ExclusionRule(organization = "org.scalatest"),
-      ExclusionRule(organization = "org.apache.spark")
+      ExclusionRule(organization = "org.scalatest")
+      ),
+    "eu.unicredit" %% "hbase-rdd" % "0.5.2" excludeAll(
+      ExclusionRule(organization = "org.apache.hbase"),
+      ExclusionRule(organization = "org.apache.spark"),
+      ExclusionRule(organization = "org.scala-lang"),
+      ExclusionRule(organization = "org.json4s")
       )
   )
 }

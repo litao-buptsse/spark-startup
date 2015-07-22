@@ -6,6 +6,7 @@ import org.apache.hadoop.hbase.client.Scan
 import org.apache.hadoop.hbase.mapreduce.TableInputFormat
 import org.apache.hadoop.hbase.util.Bytes
 import org.apache.spark.{SparkConf, SparkContext}
+import unicredit.spark.hbase._
 
 /**
  * Created by Tao Li on 7/21/15.
@@ -30,6 +31,7 @@ object HelloHbase {
   }
 }
 
+// Use third-party project SparkOnHBase
 object HelloSparkOnHbase {
   def main(args: Array[String]) {
     val tableName = "spark-test"
@@ -54,6 +56,33 @@ object HelloSparkOnHbase {
         val qualifier = Bytes.toString(column._2)
         val value = Bytes.toString(column._3)
         println(s"$row, $family, $qualifier, $value")
+      }
+    }
+  }
+}
+
+// Use third-party project hbase-rdd
+object HelloHbaseRDD {
+  def main(args: Array[String]) {
+    val table = "spark-test"
+    val families = Set("query", "topic")
+
+    val sparkConf = new SparkConf().setAppName("HelloHbaseRDD")
+    val sc = new SparkContext(sparkConf)
+
+    implicit val config = HBaseConfig()
+
+    val rdd = sc.hbaseTS[String](table, families)
+    rdd.collect.foreach { r =>
+      val row = r._1
+      for (f <- r._2) {
+        val family = f._1
+        for (c <- f._2) {
+          val qualifier = c._1
+          val value = c._2._1
+          val timestamp = c._2._2
+          println(s"$row, $family, $qualifier, $value, $timestamp")
+        }
       }
     }
   }
