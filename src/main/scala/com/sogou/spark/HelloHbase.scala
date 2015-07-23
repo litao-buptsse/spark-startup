@@ -72,14 +72,14 @@ object HelloHbaseRDD {
 
     implicit val config = HBaseConfig()
 
-    val rdd = sc.hbaseTS[String](table, families)
+    val rdd = sc.hbaseTS[Array[Byte]](table, families)
     rdd.collect.foreach { r =>
       val row = r._1
       for (f <- r._2) {
         val family = f._1
         for (c <- f._2) {
           val qualifier = c._1
-          val value = c._2._1
+          val value = Bytes.toString(c._2._1) // convert the value from Array[Byte] to String
           val timestamp = c._2._2
           println(s"$row, $family, $qualifier, $value, $timestamp")
         }
