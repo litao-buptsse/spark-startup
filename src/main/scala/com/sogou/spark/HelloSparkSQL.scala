@@ -2,7 +2,10 @@ package com.sogou.spark
 
 import java.sql.DriverManager
 
-import org.apache.spark.sql.{SQLContext, SaveMode}
+import org.apache.spark.rdd.RDD
+import org.apache.spark.sql.sources.{BaseRelation, RelationProvider, TableScan}
+import org.apache.spark.sql.types.{IntegerType, StructField, StructType}
+import org.apache.spark.sql.{Row, SQLContext, SaveMode}
 import org.apache.spark.{SparkConf, SparkContext}
 
 /**
@@ -77,5 +80,31 @@ object HelloORC {
     sqlContext.sql(s"ALTER TABLE $table ADD PARTITION(logdate='$logdate') LOCATION '$path'")
     // 4. query table
     sqlContext.sql(s"SELECT name FROM $database.$table WHERE logdate='$logdate' AND age>50").show
+  }
+}
+
+case class IntegerRelation(from: Int, to: Int)(@transient val sqlContext: SQLContext) extends BaseRelation with TableScan {
+  override def schema: StructType =
+    StructType(StructField("integer_num", IntegerType, nullable = false) :: Nil)
+
+  override def buildScan(): RDD[Row] =
+    sqlContext.sparkContext.parallelize(from to to).map(Row(_))
+}
+
+class IntegerRelationProvider extends RelationProvider {
+  override def createRelation(sqlContext: SQLContext, parameters: Map[String, String]): BaseRelation = {
+    IntegerRelation(parameters("from").toInt, parameters("to").toInt)(sqlContext)
+  }
+}
+
+object HelloDataSourceAPI {
+  def main(args: Array[String]) {
+    val conf = new SparkConf().setAppName("HelloDataSourceAPI").setMaster("local[*]")
+    val sc = new SparkContext(conf)
+    val sqlContext = new SQLContext(sc)
+
+    val options = Map("from" -> "1", "to" -> "10")
+    val df = sqlContext.read.format("com.sogou.spark.IntegerRelationProvider").options(options).load()
+    df.filter(df("integer_num") > 5).show()
   }
 }
