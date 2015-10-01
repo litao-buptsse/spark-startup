@@ -14,12 +14,14 @@ resolvers ++= Seq(
   "Cloudera Repository" at "https://repository.cloudera.com/artifactory/cloudera-repos",
   "MapR Repository" at "http://repository.mapr.com/maven",
   "spring-releases" at "https://repo.spring.io/libs-release",
+  "Job Server Bintray" at "http://dl.bintray.com/spark-jobserver/maven",
   "Sogou Maven Repository" at "http://cloud.sogou-inc.com/nexus/content/groups/public"
 )
 
 libraryDependencies ++= {
-  val sparkVersion = "1.4.0"
+  val sparkVersion = "1.5.0"
   Seq(
+    "com.typesafe" % "config" % "1.2.1" % "provided",
     "org.apache.spark" %% "spark-core" % sparkVersion % "provided"
   )
 }
