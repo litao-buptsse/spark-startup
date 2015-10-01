@@ -2,55 +2,82 @@
 
 ---
 
-## 编译环境、开发工具
+## Requirements
 
-1. JDK-1.7
-2. [IntelliJ IDEA（推荐）](https://www.jetbrains.com/idea/download/)
+* JDK-1.7
+* [IntelliJ IDEA](https://www.jetbrains.com/idea/download/)
 
-## SBT打包
+## Building
 
-```
-$ build/sbt package
-```
 
-Note: 
-
-1. 默认版本：scala(2.10.4)、sbt(0.13.5)、spark(1.4.0)
-1. 打包后的JAR位置：target/scala-2.10/spark-startup-scala_2.10-1.0.jar
-2. 建议使用build/sbt工具进行打包，将自动下载scala、sbt、zinc等工具，并自动开启zinc加速编译
-
-## SBT打包（assembly）
+### 1. docker build
 
 ```
-$ build/sbt assembly
+$ cd docker; make push
 ```
 
-Note: 
+* docker image: registry.docker.dev.sogou-inc.com:5000/clouddev/spark-startup:1.0
 
-1. 打包后的JAR位置：target/scala-2.10/spark-startup-scala-assembly-1.0.jar
-2. 可在build.sbt中配置main class
-3. 将dependency的scope设置为"provided"，则此依赖不会打包进行assembly
-4. 默认在build.sbt中将autoScalaLibrary为false，则不会将scala依赖打包进assembly
-
-## 本地运行
+### 2. release tgz
 
 ```
-$ spark-submit \
-  	--master local \
-  	--class com.sogou.spark.HelloSparkCore \
-  	target/scala-2.10/spark-startup-scala_2.10-1.0.jar /user/spark/README.md
+$ bin/release-tgz.sh
 ```
 
-## 集群运行
+* tgz location: dist/spark-startup_2.10.4-1.0.tgz
+
+
+### 3. sbt package
 
 ```
-$ spark-submit \
-  	--master yarn-client \
-  	--class com.sogou.spark.HelloSparkCore \
-  	--executor-memory 512M \
-  	--driver-memory 512M \
-  	--num-executors 2 \
-  	--executor-cores 1 \
-  	--queue root.spark_test \
-  	target/scala-2.10/spark-startup-scala_2.10-1.0.jar /user/spark/README.md
+$ build/sbt clean package 
 ```
+
+* jar location: target/scala-2.10/spark-startup_2.10-1.0.jar
+
+### 4. sbt assembly
+
+```
+$ build/sbt clean assembly 
+```
+
+* assembly jar location: target/scala-2.10/spark-startup-assembly-1.0.jar
+
+
+## Configuration
+
+* config file location: conf/application.conf
+
+## Running
+
+### 1. docker_run.sh
+
+```
+$ mkdir app; cp docker/docker_run.sh app/; cp conf/* app/
+$ cd app/; ./docker_run.sh <input>
+```
+
+### 2. run.sh
+
+```
+$ tar -xzvf spark-startup-scala_2.10.4-1.0.tgz
+$ cd spark-startup-scala_2.10.4-1.0; ./run.sh <input>
+```
+
+## Resources
+
+### About Spark
+Please refer to the [spark programming guide](http://spark.apache.org/docs/latest/programming-guide.html) for more informatioin
+
+### About Scala
+
+Please refer to [scala documentation](http://www.scala-lang.org/documentation/) the for more informatioin
+
+### About SBT
+Please refer to the [sbt tutorial](http://www.scala-sbt.org/0.13/tutorial/index.html) for more informatioin
+
+### About Typesafe Config
+Please refer to the [typesafehub/config](https://github.com/typesafehub/config) for more informatioin
+
+### About Docker
+Please refer to the [docker docks](https://docs.docker.com/) for more informatioin
