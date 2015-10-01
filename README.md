@@ -13,7 +13,7 @@
 ### 1. docker build
 
 ```
-$ cd docker; make push
+$ cd docker; make
 ```
 
 * docker image: registry.docker.dev.sogou-inc.com:5000/clouddev/spark-startup:1.0
