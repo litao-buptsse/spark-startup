@@ -17,8 +17,6 @@ VERSION=1.0
 
 CONFIG_FILE=$dir/application.conf
 
-mkdir -p $LOG_DIR
-
 docker run --rm --net=host \
     -v $CONFIG_FILE:/search/app/application.conf \
     -v /root/ugi_config:/root/ugi_config \
