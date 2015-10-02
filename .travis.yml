@@ -1,5 +1,15 @@
 language: scala
+jdk:
+  - oraclejdk7
 scala:
   - 2.10.4
 env:
   - SBT_OPTS="-XX:+CMSClassUnloadingEnabled -Xmx1G -XX:PermSize=512M -XX:MaxPermSize=1G"
+script:
+  - sbt ++$TRAVIS_SCALA_VERSION test
+branches:
+  only:
+    - master
+notifications:
+  email:
+    - litao.buptsse@gmail.com

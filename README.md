@@ -1,5 +1,9 @@
 # Spark Startup - Build Your First Spark APP
 
+[![Build Status](https://travis-ci.org/litao-buptsse/spark-startup.svg?branch=master)](https://travis-ci.org/litao-buptsse/spark-startup)
+[![Software License](https://img.shields.io/badge/license-Apache%202.0-brightgreen.svg)](https://github.com/litao-buptsse/spark-startup/blob/master/LICENSE)
+[![Project Status](https://stillmaintained.com/litao-buptsse/spark-startup.png)](https://stillmaintained.com/litao-buptsse/spark-startup)
+
 ---
 
 ## Requirements
