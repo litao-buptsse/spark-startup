@@ -1,0 +1,5 @@
+language: scala
+scala:
+  - 2.10.4
+env:
+  - SBT_OPTS="-XX:+CMSClassUnloadingEnabled -Xmx1G -XX:PermSize=512M -XX:MaxPermSize=1G"
