@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>spark-startup by litao-buptsse</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+  </head>
+  <body>
+    <section class="page-header">
+      <h1 class="project-name">spark-startup</h1>
+      <h2 class="project-tagline">Spark Startup - Build Your First Spark APP</h2>
+      <a href="https://github.com/litao-buptsse/spark-startup" class="btn">View on GitHub</a>
+      <a href="https://github.com/litao-buptsse/spark-startup/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/litao-buptsse/spark-startup/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
+
+    <section class="main-content">
+      <h1>
+<a id="spark-startup---build-your-first-spark-app" class="anchor" href="#spark-startup---build-your-first-spark-app" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Spark Startup - Build Your First Spark APP</h1>
+
+<p><a href="https://travis-ci.org/litao-buptsse/spark-startup"><img src="https://travis-ci.org/litao-buptsse/spark-startup.svg?branch=master" alt="Build Status"></a>
+<a href="https://github.com/litao-buptsse/spark-startup/blob/master/LICENSE"><img src="https://img.shields.io/badge/license-Apache%202.0-brightgreen.svg" alt="Software License"></a>
+<a href="https://stillmaintained.com/litao-buptsse/spark-startup"><img src="https://stillmaintained.com/litao-buptsse/spark-startup.png" alt="Project Status"></a></p>
+
+<hr>
+
+<h2>
+<a id="requirements" class="anchor" href="#requirements" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Requirements</h2>
+
+<ul>
+<li>JDK-1.7</li>
+<li><a href="https://www.jetbrains.com/idea/download/">IntelliJ IDEA</a></li>
+</ul>
+
+<h2>
+<a id="building" class="anchor" href="#building" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Building</h2>
+
+<h3>
+<a id="1-docker-build" class="anchor" href="#1-docker-build" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>1. docker build</h3>
+
+<pre><code>$ cd docker; make
+</code></pre>
+
+<ul>
+<li>docker image: registry.docker.dev.sogou-inc.com:5000/clouddev/spark-startup:1.0</li>
+</ul>
+
+<h3>
+<a id="2-release-tgz" class="anchor" href="#2-release-tgz" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>2. release tgz</h3>
+
+<pre><code>$ bin/release-tgz.sh
+</code></pre>
+
+<ul>
+<li>tgz location: dist/spark-startup_2.10.4-1.0.tgz</li>
+</ul>
+
+<h3>
+<a id="3-sbt-package" class="anchor" href="#3-sbt-package" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>3. sbt package</h3>
+
+<pre><code>$ build/sbt clean package 
+</code></pre>
+
+<ul>
+<li>jar location: target/scala-2.10/spark-startup_2.10-1.0.jar</li>
+</ul>
+
+<h3>
+<a id="4-sbt-assembly" class="anchor" href="#4-sbt-assembly" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>4. sbt assembly</h3>
+
+<pre><code>$ build/sbt clean assembly 
+</code></pre>
+
+<ul>
+<li>assembly jar location: target/scala-2.10/spark-startup-assembly-1.0.jar</li>
+</ul>
+
+<h2>
+<a id="configuration" class="anchor" href="#configuration" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Configuration</h2>
+
+<ul>
+<li>config file location: conf/application.conf</li>
+</ul>
+
+<h2>
+<a id="running" class="anchor" href="#running" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Running</h2>
+
+<h3>
+<a id="1-docker_runsh" class="anchor" href="#1-docker_runsh" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>1. docker_run.sh</h3>
+
+<pre><code>$ mkdir app; cp docker/docker_run.sh app/; cp conf/* app/
+$ cd app/; ./docker_run.sh &lt;input&gt;
+</code></pre>
+
+<h3>
+<a id="2-runsh" class="anchor" href="#2-runsh" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>2. run.sh</h3>
+
+<pre><code>$ tar -xzvf spark-startup-scala_2.10.4-1.0.tgz
+$ cd spark-startup-scala_2.10.4-1.0; ./run.sh &lt;input&gt;
+</code></pre>
+
+<h2>
+<a id="resources" class="anchor" href="#resources" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Resources</h2>
+
+<h3>
+<a id="about-spark" class="anchor" href="#about-spark" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>About Spark</h3>
+
+<p>Please refer to the <a href="http://spark.apache.org/docs/latest/programming-guide.html">spark programming guide</a> for more informatioin</p>
+
+<h3>
+<a id="about-scala" class="anchor" href="#about-scala" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>About Scala</h3>
+
+<p>Please refer to <a href="http://www.scala-lang.org/documentation/">scala documentation</a> the for more informatioin</p>
+
+<h3>
+<a id="about-sbt" class="anchor" href="#about-sbt" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>About SBT</h3>
+
+<p>Please refer to the <a href="http://www.scala-sbt.org/0.13/tutorial/index.html">sbt tutorial</a> for more informatioin</p>
+
+<h3>
+<a id="about-typesafe-config" class="anchor" href="#about-typesafe-config" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>About Typesafe Config</h3>
+
+<p>Please refer to the <a href="https://github.com/typesafehub/config">typesafehub/config</a> for more informatioin</p>
+
+<h3>
+<a id="about-docker" class="anchor" href="#about-docker" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>About Docker</h3>
+
+<p>Please refer to the <a href="https://docs.docker.com/">docker docks</a> for more informatioin</p>
+
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/litao-buptsse/spark-startup">spark-startup</a> is maintained by <a href="https://github.com/litao-buptsse">litao-buptsse</a>.</span>
+
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+      </footer>
+
+    </section>
+
+  
+  </body>
+</html>
